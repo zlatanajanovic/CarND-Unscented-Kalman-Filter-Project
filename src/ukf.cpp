@@ -225,7 +225,7 @@ void UKF::Prediction(double delta_t) {
   }
   
   //print result
-  //std::cout << "Xsig_aug = " << std::endl << Xsig_aug << std::endl;
+  std::cout << "Xsig_aug = " << std::endl << Xsig_aug << std::endl;
   
   
   /*
@@ -279,7 +279,7 @@ void UKF::Prediction(double delta_t) {
   }
   
   //print result
-  //std::cout << "Xsig_pred_ = " << std::endl << Xsig_pred << std::endl;
+  std::cout << "Xsig_pred_ = " << std::endl << Xsig_pred << std::endl;
   
   /*
   * PREDICTED MEAN AND COVARIANCE
@@ -313,10 +313,10 @@ void UKF::Prediction(double delta_t) {
   }
 
   //print result
-  //std::cout << "Predicted state" << std::endl;
-  //std::cout << x_ << std::endl;
-  //std::cout << "Predicted covariance matrix" << std::endl;
-  //std::cout << P_ << std::endl;
+  std::cout << "Predicted state" << std::endl;
+  std::cout << x_ << std::endl;
+  std::cout << "Predicted covariance matrix" << std::endl;
+  std::cout << P_ << std::endl;
 
 }
 
@@ -401,8 +401,8 @@ void UKF::UpdateRadar(MeasurementPackage meas_package) {
   S = S + R;
 
   //print result
-  //std::cout << "z_pred: " << std::endl << z_pred << std::endl;
-  //std::cout << "S: " << std::endl << S << std::endl;
+  std::cout << "z_pred: " << std::endl << z_pred << std::endl;
+  std::cout << "S: " << std::endl << S << std::endl;
   
   /*
   * UPDATE
@@ -448,8 +448,8 @@ void UKF::UpdateRadar(MeasurementPackage meas_package) {
   P_ = P_ - K*S*K.transpose();
 
   //print result
-  //std::cout << "Updated state x: " << std::endl << x << std::endl;
-  //std::cout << "Updated state covariance P: " << std::endl << P << std::endl;
+  std::cout << "Updated state x: " << std::endl << x << std::endl;
+  std::cout << "Updated state covariance P: " << std::endl << P << std::endl;
   
   
 }
