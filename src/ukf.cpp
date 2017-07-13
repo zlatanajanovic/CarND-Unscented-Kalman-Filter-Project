@@ -34,7 +34,7 @@ UKF::UKF() {
   n_aug_ = 7;
   
   // predicted sigma points matrix
-  MatrixXd Xsig_pred_= MatrixXd(n_aug_, 2 * n_aug_ + 1);
+  MatrixXd Xsig_pred_= MatrixXd(n_x_, 2 * n_aug_ + 1);
   
   // time when the state is true, in us
   time_us_ = 0;
@@ -231,7 +231,6 @@ void UKF::Prediction(double delta_t) {
   /*
   * SIGMA POINTS PREDICTION
   */
-  
 
   //predict sigma points
   for (int i = 0; i< 2*n_aug_+1; i++)
@@ -269,7 +268,9 @@ void UKF::Prediction(double delta_t) {
 
     yaw_p = yaw_p + 0.5*nu_yawdd*delta_t*delta_t;
     yawd_p = yawd_p + nu_yawdd*delta_t;
-
+	
+	
+	//std::cout << "Xsig_pred_ prije"<< std::endl;
     //write predicted sigma point into right column
     Xsig_pred_(0,i) = px_p;
     Xsig_pred_(1,i) = py_p;
