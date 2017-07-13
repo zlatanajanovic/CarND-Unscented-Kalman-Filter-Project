@@ -232,6 +232,7 @@ void UKF::Prediction(double delta_t) {
   * SIGMA POINTS PREDICTION
   */
 
+  std::cout << "Xsig_pred_ prije2"<< std::endl;
   //predict sigma points
   for (int i = 0; i< 2*n_aug_+1; i++)
   {
@@ -246,6 +247,7 @@ void UKF::Prediction(double delta_t) {
 
     //predicted state values
     double px_p, py_p;
+	std::cout << "Xsig_pred_ prije1"<< std::endl;
 
     //avoid division by zero
     if (fabs(yawd) > 0.001) {
@@ -270,7 +272,7 @@ void UKF::Prediction(double delta_t) {
     yawd_p = yawd_p + nu_yawdd*delta_t;
 	
 	
-	//std::cout << "Xsig_pred_ prije"<< std::endl;
+	std::cout << "Xsig_pred_ prije"<< std::endl;
     //write predicted sigma point into right column
     Xsig_pred_(0,i) = px_p;
     Xsig_pred_(1,i) = py_p;
