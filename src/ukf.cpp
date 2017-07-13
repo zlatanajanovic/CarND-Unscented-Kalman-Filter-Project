@@ -61,7 +61,7 @@ UKF::UKF() {
   std_radrd_ = 0.3;
   
   // Weights of sigma points
-  VectorXd weights_ = VectorXd(2*n_aug_+1);;
+  weights_ = VectorXd(2*n_aug_+1);;
   
   // Sigma point spreading parameter
   lambda_ = 3 - n_aug_;
