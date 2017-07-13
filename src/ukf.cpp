@@ -64,7 +64,7 @@ UKF::UKF() {
   VectorXd weights_ = VectorXd(2*n_aug_+1);;
   
   // Sigma point spreading parameter
-  dlambda_ = 3 - n_aug_;
+  lambda_ = 3 - n_aug_;
 
   /**
   TODO:
@@ -133,7 +133,7 @@ void UKF::ProcessMeasurement(MeasurementPackage meas_package) {
 			0,
 			0;
     }
-	previous_timestamp_ = meas_package.timestamp_;
+	time_us_ = meas_package.timestamp_;
 
     // done initializing, no need to predict or update
     is_initialized_ = true;
@@ -145,8 +145,8 @@ void UKF::ProcessMeasurement(MeasurementPackage meas_package) {
    ****************************************************************************/
    
   //compute the time elapsed between the current and previous measurements
-  float dt = (meas_package.timestamp_ - previous_timestamp_) / 1000000.0;	//dt - expressed in seconds
-  previous_timestamp_ = meas_package.timestamp_;
+  float dt = (meas_package.timestamp_ - time_us_) / 1000000.0;	//dt - expressed in seconds
+  time_us_ = meas_package.timestamp_;
 
   Prediction(dt);
 
@@ -163,7 +163,7 @@ void UKF::ProcessMeasurement(MeasurementPackage meas_package) {
     // Radar updates
 	UpdateRadar(meas_package);
   } 
-  if ((meas_package.sensor_type_ == MeasurementPackage::LIDAR)&&(use_laser_)){
+  if ((meas_package.sensor_type_ == MeasurementPackage::LASER)&&(use_laser_)){
     // Laser updates
     UpdateLidar(meas_package);
   }
@@ -286,17 +286,17 @@ void UKF::Prediction(double delta_t) {
   */
 
   // set weights
-  double weight_0 = lambda/(lambda+n_aug);
+  double weight_0 = lambda_/(lambda_+n_aug_);
   weights_(0) = weight_0;
   for (int i=1; i<2*n_aug+1; i++) {  //2n+1 weights
-    double weight = 0.5/(n_aug+lambda);
+    double weight = 0.5/(n_aug_+lambda_);
     weights_(i) = weight;
   }
 
   //predicted state mean
   x_.fill(0.0);
   for (int i = 0; i < 2 * n_aug_ + 1; i++) {  //iterate over sigma points
-    x_ = x_+ weights_(i) * Xsig_pred.col(i);
+    x_ = x_+ weights_(i) * Xsig_pred_.col(i);
   }
 
   //predicted state covariance matrix
@@ -304,7 +304,7 @@ void UKF::Prediction(double delta_t) {
   for (int i = 0; i < 2 * n_aug + 1; i++) {  //iterate over sigma points
 
     // state difference
-    VectorXd x_diff = Xsig_pred.col(i) - x_;
+    VectorXd x_diff = Xsig_pred_.col(i) - x_;
     //angle normalization
     while (x_diff(3)> M_PI) x_diff(3)-=2.*M_PI;
     while (x_diff(3)<-M_PI) x_diff(3)+=2.*M_PI;
@@ -409,7 +409,7 @@ void UKF::UpdateRadar(MeasurementPackage meas_package) {
   */
   
   //create example vector for incoming radar measurement
-  VectorXd z = measurement_pack.raw_measurements_;
+  VectorXd z = meas_package.raw_measurements_;
   
   //create matrix for cross correlation Tc
   MatrixXd Tc = MatrixXd(n_x_, n_z);
@@ -425,12 +425,12 @@ void UKF::UpdateRadar(MeasurementPackage meas_package) {
     while (z_diff(1)<-M_PI) z_diff(1)+=2.*M_PI;
 
     // state difference
-    VectorXd x_diff = Xsig_pred.col(i) - x;
+    VectorXd x_diff = Xsig_pred_.col(i) - x_;
     //angle normalization
     while (x_diff(3)> M_PI) x_diff(3)-=2.*M_PI;
     while (x_diff(3)<-M_PI) x_diff(3)+=2.*M_PI;
 
-    Tc = Tc + weights(i) * x_diff * z_diff.transpose();
+    Tc = Tc + weights_(i) * x_diff * z_diff.transpose();
   }
 
   //Kalman gain K;
