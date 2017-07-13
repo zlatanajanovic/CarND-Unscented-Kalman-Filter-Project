@@ -170,8 +170,8 @@ void UKF::ProcessMeasurement(MeasurementPackage meas_package) {
   cout << "measurement = " << meas_package.raw_measurements_ << endl;
 
   // print the output
-  //cout << "x_ = " << x_ << endl;
-  //cout << "P_ = " << P_ << endl;
+  cout << "x_ = " << x_ << endl;
+  cout << "P_ = " << P_ << endl;
 
   
 }
@@ -279,7 +279,7 @@ void UKF::Prediction(double delta_t) {
   }
   
   //print result
-  std::cout << "Xsig_pred_ = " << std::endl << Xsig_pred << std::endl;
+  std::cout << "Xsig_pred_ = " << std::endl << Xsig_pred_ << std::endl;
   
   /*
   * PREDICTED MEAN AND COVARIANCE
@@ -448,8 +448,8 @@ void UKF::UpdateRadar(MeasurementPackage meas_package) {
   P_ = P_ - K*S*K.transpose();
 
   //print result
-  std::cout << "Updated state x: " << std::endl << x << std::endl;
-  std::cout << "Updated state covariance P: " << std::endl << P << std::endl;
+  std::cout << "Updated state x: " << std::endl << x_ << std::endl;
+  std::cout << "Updated state covariance P: " << std::endl << P_ << std::endl;
   
   
 }
