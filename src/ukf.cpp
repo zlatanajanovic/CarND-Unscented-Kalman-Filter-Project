@@ -108,10 +108,10 @@ void UKF::ProcessMeasurement(MeasurementPackage meas_package) {
 	//state covariance matrix P
 	P_ = MatrixXd(5, 5);
 	P_ << 1, 0, 0, 0, 0,
-			 0, 1, 0, 0, 0,
-			 0, 0, 1000, 0, 0,
-			 0, 0, 0, 1000, 0,
-			 0, 0, 0, 0, 1000;  
+		  0, 1, 0, 0, 0,
+		  0, 0, 1, 0, 0,
+		  0, 0, 0, 1, 0,
+		  0, 0, 0, 0, 1;  
 
     if (meas_package.sensor_type_ == MeasurementPackage::RADAR) {
       /**
